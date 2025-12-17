@@ -26,14 +26,14 @@ const QueueVisualizer = () => {
 
   return (
     <div className="p-6">
-      <h2 className="text-3xl font-bold text-white mb-6 text-center">Queue Visualizer (FIFO)</h2>
-      
+      <h2 className="text-2xl md:text-3xl font-bold text-white mb-6 text-center">Queue Visualizer (FIFO)</h2>
+
       <div className="flex flex-col items-center gap-8">
         {/* Queue visualization */}
         <div className="relative w-full max-w-4xl">
           <div className="flex items-center justify-center gap-3 min-h-[150px]">
             <div className="text-white font-semibold mr-4">Front</div>
-            
+
             <div className="flex-1 flex items-center justify-start gap-3 overflow-x-auto pb-4">
               <AnimatePresence mode="popLayout">
                 {queue.map((value, index) => (
@@ -53,12 +53,12 @@ const QueueVisualizer = () => {
                   </motion.div>
                 ))}
               </AnimatePresence>
-              
+
               {queue.length === 0 && (
                 <div className="text-white/50 text-center flex-1 py-8">Queue is empty</div>
               )}
             </div>
-            
+
             <div className="text-white font-semibold ml-4">Rear</div>
           </div>
 
@@ -79,25 +79,25 @@ const QueueVisualizer = () => {
         )}
       </div>
 
-      <div className="mt-8 bg-white/5 rounded-lg p-4 space-y-4">
-        <div className="flex gap-4">
+      <div className="mt-8 bg-white/5 rounded-lg p-3 md:p-4 space-y-4">
+        <div className="flex flex-col sm:flex-row gap-2 md:gap-4">
           <input
             type="number"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleEnqueue()}
-            placeholder="Enter value to enqueue"
-            className="flex-1 px-4 py-2 rounded-lg bg-white/10 text-white placeholder-white/50 border border-white/20 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            placeholder="Enter value"
+            className="flex-1 px-4 py-2 rounded-lg bg-white/10 text-white placeholder-white/50 border border-white/20 focus:outline-none focus:ring-2 focus:ring-purple-500 w-full"
           />
           <button
             onClick={handleEnqueue}
-            className="px-8 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold transition-colors"
+            className="px-8 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold transition-colors w-full sm:w-auto"
           >
             Enqueue
           </button>
           <button
             onClick={handleDequeue}
-            className="px-8 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold transition-colors"
+            className="px-8 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold transition-colors w-full sm:w-auto"
           >
             Dequeue
           </button>

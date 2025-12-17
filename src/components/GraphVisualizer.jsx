@@ -30,13 +30,13 @@ const GraphVisualizer = () => {
     const visited = new Set()
     const queue = [start]
     const result = []
-    
+
     visited.add(start)
-    
+
     while (queue.length > 0) {
       const node = queue.shift()
       result.push(node)
-      
+
       for (const neighbor of graph[node]) {
         if (!visited.has(neighbor)) {
           visited.add(neighbor)
@@ -44,25 +44,25 @@ const GraphVisualizer = () => {
         }
       }
     }
-    
+
     return result
   }
 
   const dfs = (start) => {
     const visited = new Set()
     const result = []
-    
+
     const dfsHelper = (node) => {
       visited.add(node)
       result.push(node)
-      
+
       for (const neighbor of graph[node]) {
         if (!visited.has(neighbor)) {
           dfsHelper(neighbor)
         }
       }
     }
-    
+
     dfsHelper(start)
     return result
   }
@@ -71,12 +71,12 @@ const GraphVisualizer = () => {
     setIsTraversing(true)
     setTraversalType(type)
     setTraversalOrder([])
-    
+
     for (let i = 0; i < order.length; i++) {
       await new Promise(resolve => setTimeout(resolve, 600))
       setTraversalOrder(order.slice(0, i + 1))
     }
-    
+
     setTimeout(() => {
       setTraversalOrder([])
       setTraversalType('')
@@ -109,11 +109,11 @@ const GraphVisualizer = () => {
   }
 
   return (
-    <div className="p-6">
-      <h2 className="text-3xl font-bold text-white mb-6 text-center">Graph Traversal Visualizer</h2>
-      
+    <div className="p-3 md:p-6">
+      <h2 className="text-2xl md:text-3xl font-bold text-white mb-6 text-center">Graph Traversal Visualizer</h2>
+
       <div className="flex flex-col items-center gap-8 mb-8">
-        <div className="bg-white/5 rounded-lg p-8 overflow-x-auto">
+        <div className="bg-white/5 rounded-lg p-2 md:p-8 overflow-x-auto w-full">
           <svg width="800" height="500" className="overflow-visible">
             {/* Draw edges */}
             {Object.entries(graph).map(([node, neighbors]) => {
@@ -140,7 +140,7 @@ const GraphVisualizer = () => {
               const nodeNum = parseInt(node)
               const highlighted = isHighlighted(nodeNum)
               const visited = isVisited(nodeNum)
-              
+
               return (
                 <g key={node}>
                   <motion.circle
@@ -182,19 +182,19 @@ const GraphVisualizer = () => {
         )}
       </div>
 
-      <div className="bg-white/5 rounded-lg p-4 space-y-4">
-        <div className="flex flex-wrap gap-4 justify-center">
+      <div className="bg-white/5 rounded-lg p-3 md:p-4 space-y-4">
+        <div className="flex flex-col sm:flex-row flex-wrap gap-2 md:gap-4 justify-center">
           <button
             onClick={handleBFS}
             disabled={isTraversing}
-            className="px-8 py-3 bg-blue-500 hover:bg-blue-600 disabled:bg-gray-500 disabled:cursor-not-allowed text-white rounded-lg font-semibold transition-colors text-lg"
+            className="px-6 py-3 bg-blue-500 hover:bg-blue-600 disabled:bg-gray-500 disabled:cursor-not-allowed text-white rounded-lg font-semibold transition-colors text-base md:text-lg w-full sm:w-auto"
           >
             Breadth-First Search (BFS)
           </button>
           <button
             onClick={handleDFS}
             disabled={isTraversing}
-            className="px-8 py-3 bg-green-500 hover:bg-green-600 disabled:bg-gray-500 disabled:cursor-not-allowed text-white rounded-lg font-semibold transition-colors text-lg"
+            className="px-6 py-3 bg-green-500 hover:bg-green-600 disabled:bg-gray-500 disabled:cursor-not-allowed text-white rounded-lg font-semibold transition-colors text-base md:text-lg w-full sm:w-auto"
           >
             Depth-First Search (DFS)
           </button>

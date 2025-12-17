@@ -40,29 +40,28 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-4 md:py-8">
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-5xl font-bold text-white text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400"
+          className="text-3xl md:text-5xl font-bold text-white text-center mb-6 md:mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400"
         >
           Data Structure Visualizer
         </motion.h1>
 
-        <div className="flex flex-wrap justify-center gap-4 mb-8">
+        <div className="grid grid-cols-2 sm:flex sm:flex-wrap justify-center gap-3 md:gap-4 mb-6 md:mb-8">
           {dataStructures.map((ds) => (
             <motion.button
               key={ds.id}
               onClick={() => setActiveDS(ds.id)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
-                activeDS === ds.id
+              className={`px-3 py-2 md:px-6 md:py-3 rounded-lg font-semibold transition-all duration-300 text-sm md:text-base ${activeDS === ds.id
                   ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
                   : 'bg-white/10 text-white/80 hover:bg-white/20 backdrop-blur-sm'
-              }`}
+                }`}
             >
-              <span className="mr-2 text-xl">{ds.icon}</span>
+              <span className="mr-1 md:mr-2 text-lg md:text-xl block sm:inline">{ds.icon}</span>
               {ds.name}
             </motion.button>
           ))}

@@ -22,23 +22,23 @@ const TreeVisualizer = () => {
 
   const calculatePositions = (node, x, y, level = 0, positions = {}) => {
     if (!node) return positions
-    
+
     positions[node.value] = { x, y, level, node }
     const spacing = Math.max(80, 200 - level * 40)
-    
+
     if (node.left) {
       calculatePositions(node.left, x - spacing, y + 100, level + 1, positions)
     }
     if (node.right) {
       calculatePositions(node.right, x + spacing, y + 100, level + 1, positions)
     }
-    
+
     return positions
   }
 
   const getAllEdges = (node, edges = []) => {
     if (!node) return edges
-    
+
     if (node.left) {
       edges.push({ from: node.value, to: node.left.value })
       getAllEdges(node.left, edges)
@@ -47,7 +47,7 @@ const TreeVisualizer = () => {
       edges.push({ from: node.value, to: node.right.value })
       getAllEdges(node.right, edges)
     }
-    
+
     return edges
   }
 
@@ -78,12 +78,12 @@ const TreeVisualizer = () => {
   const animateTraversal = async (order) => {
     setIsTraversing(true)
     setTraversalOrder([])
-    
+
     for (let i = 0; i < order.length; i++) {
       await new Promise(resolve => setTimeout(resolve, 800))
       setTraversalOrder(order.slice(0, i + 1))
     }
-    
+
     setTimeout(() => {
       setTraversalOrder([])
       setIsTraversing(false)
@@ -109,18 +109,18 @@ const TreeVisualizer = () => {
   const edges = getAllEdges(tree)
 
   return (
-    <div className="p-6">
-      <h2 className="text-3xl font-bold text-white mb-6 text-center">Binary Tree Visualizer</h2>
-      
+    <div className="p-3 md:p-6">
+      <h2 className="text-2xl md:text-3xl font-bold text-white mb-6 text-center">Binary Tree Visualizer</h2>
+
       <div className="flex flex-col items-center gap-8 mb-8">
-        <div className="bg-white/5 rounded-lg p-8 overflow-x-auto">
+        <div className="bg-white/5 rounded-lg p-2 md:p-8 overflow-x-auto w-full">
           <svg width="800" height="500" className="overflow-visible">
             {/* Draw edges */}
             {edges.map((edge, idx) => {
               const fromPos = positions[edge.from]
               const toPos = positions[edge.to]
               if (!fromPos || !toPos) return null
-              
+
               return (
                 <line
                   key={`${edge.from}-${edge.to}-${idx}`}
@@ -133,13 +133,13 @@ const TreeVisualizer = () => {
                 />
               )
             })}
-            
+
             {/* Draw nodes */}
             {Object.entries(positions).map(([value, pos]) => {
               const nodeValue = parseInt(value)
               const isHighlighted = traversalOrder.length > 0 && traversalOrder[traversalOrder.length - 1] === nodeValue
               const isVisited = traversalOrder.includes(nodeValue)
-              
+
               return (
                 <g key={value}>
                   <motion.circle
@@ -181,26 +181,26 @@ const TreeVisualizer = () => {
         )}
       </div>
 
-      <div className="bg-white/5 rounded-lg p-4 space-y-4">
-        <div className="flex flex-wrap gap-4 justify-center">
+      <div className="bg-white/5 rounded-lg p-3 md:p-4 space-y-4">
+        <div className="flex flex-col sm:flex-row flex-wrap gap-2 md:gap-4 justify-center">
           <button
             onClick={handlePreorder}
             disabled={isTraversing}
-            className="px-6 py-2 bg-blue-500 hover:bg-blue-600 disabled:bg-gray-500 disabled:cursor-not-allowed text-white rounded-lg font-semibold transition-colors"
+            className="px-6 py-2 bg-blue-500 hover:bg-blue-600 disabled:bg-gray-500 disabled:cursor-not-allowed text-white rounded-lg font-semibold transition-colors w-full sm:w-auto text-sm md:text-base"
           >
             Preorder (NLR)
           </button>
           <button
             onClick={handleInorder}
             disabled={isTraversing}
-            className="px-6 py-2 bg-green-500 hover:bg-green-600 disabled:bg-gray-500 disabled:cursor-not-allowed text-white rounded-lg font-semibold transition-colors"
+            className="px-6 py-2 bg-green-500 hover:bg-green-600 disabled:bg-gray-500 disabled:cursor-not-allowed text-white rounded-lg font-semibold transition-colors w-full sm:w-auto text-sm md:text-base"
           >
             Inorder (LNR)
           </button>
           <button
             onClick={handlePostorder}
             disabled={isTraversing}
-            className="px-6 py-2 bg-purple-500 hover:bg-purple-600 disabled:bg-gray-500 disabled:cursor-not-allowed text-white rounded-lg font-semibold transition-colors"
+            className="px-6 py-2 bg-purple-500 hover:bg-purple-600 disabled:bg-gray-500 disabled:cursor-not-allowed text-white rounded-lg font-semibold transition-colors w-full sm:w-auto text-sm md:text-base"
           >
             Postorder (LRN)
           </button>
