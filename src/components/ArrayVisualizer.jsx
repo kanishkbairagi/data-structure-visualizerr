@@ -36,7 +36,7 @@ const ArrayVisualizer = () => {
 
     setArray([...array, value])
     setInputValue('')
-    setStats(prev => ({ ...prev, writes, amortizedCost: 'O(1) Amortized (O(N) during reallocation)' }))
+    setStats(prev => ({ ...prev, writes, amortizedCost: 'O(1) Amortized (O(N) reallocation)' }))
     setIsProcessing(false)
   }
 
@@ -67,7 +67,7 @@ const ArrayVisualizer = () => {
     setIndexValue('')
     setHighlightIndices({ active: index, low: -1, mid: -1, high: -1 })
     const shifted = array.length - index
-    setStatusLog(`✓ Inserted ${value} at index [${index}]. Elements shifted right: ${shifted} (Time: O(N))`)
+    setStatusLog(`✓ Inserted ${value} at index [${index}]. Elements shifted: ${shifted}`)
     setStats(prev => ({ ...prev, writes: prev.writes + shifted + 1 }))
     setTimeout(() => setHighlightIndices({ active: -1, low: -1, mid: -1, high: -1 }), 1200)
   }
@@ -85,7 +85,7 @@ const ArrayVisualizer = () => {
       setArray(newArray)
       setIndexValue('')
       setHighlightIndices({ active: -1, low: -1, mid: -1, high: -1 })
-      setStatusLog(`✓ Deleted ${removed} at index [${index}]. Elements shifted left: ${shifted}`)
+      setStatusLog(`✓ Deleted ${removed} at index [${index}]. Elements shifted: ${shifted}`)
       setStats(prev => ({ ...prev, writes: prev.writes + shifted }))
     }, 400)
   }
@@ -128,7 +128,7 @@ const ArrayVisualizer = () => {
 
     if (!found) {
       setHighlightIndices({ active: -1, low: -1, mid: -1, high: -1 })
-      setStatusLog(`❌ Target ${target} NOT found in array (Total comparisons: ${comps})`)
+      setStatusLog(`❌ Target ${target} NOT found (Total comparisons: ${comps})`)
     }
 
     setStats(prev => ({ ...prev, comparisons: prev.comparisons + comps }))
@@ -136,149 +136,157 @@ const ArrayVisualizer = () => {
   }
 
   return (
-    <div className="p-3 md:p-6 text-white">
+    <div className="p-2.5 sm:p-4 md:p-6 text-white max-w-full overflow-hidden">
       {/* Header and Amortized Complexity HUD */}
-      <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-4 md:mb-6 gap-3 md:gap-4">
         <div>
-          <h2 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-300 to-indigo-400">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-300 to-indigo-400">
             Dynamic Array & Complexity Engine
           </h2>
-          <p className="text-xs md:text-sm text-slate-300 mt-1">
-            Contiguous Memory Allocation, Buffer Resizing (Amortized Analysis) & Binary Search
+          <p className="text-[11px] sm:text-xs md:text-sm text-slate-300 mt-0.5">
+            Buffer Resizing (Amortized Analysis) & Binary Search
           </p>
         </div>
 
-        <div className="flex gap-3 bg-white/10 px-4 py-2 rounded-xl backdrop-blur-md border border-white/10 text-xs">
-          <div>
-            <span className="text-slate-400 block font-mono">Amortized Cost</span>
-            <span className="text-emerald-400 font-bold font-mono">O(1) Append</span>
+        <div className="grid grid-cols-3 gap-2 bg-white/10 p-2 sm:px-4 sm:py-2 rounded-xl backdrop-blur-md border border-white/10 text-xs w-full lg:w-auto">
+          <div className="text-center sm:text-left">
+            <span className="text-slate-400 block font-mono text-[10px] sm:text-xs">Amortized</span>
+            <span className="text-emerald-400 font-bold font-mono text-xs sm:text-sm">O(1)</span>
           </div>
-          <div className="border-l border-white/20 pl-3">
-            <span className="text-slate-400 block font-mono">Size / Capacity</span>
-            <span className="text-cyan-400 font-bold font-mono">{array.length} / {capacity}</span>
+          <div className="border-l border-white/20 pl-2 text-center sm:text-left">
+            <span className="text-slate-400 block font-mono text-[10px] sm:text-xs">Size / Cap</span>
+            <span className="text-cyan-400 font-bold font-mono text-xs sm:text-sm">{array.length}/{capacity}</span>
           </div>
-          <div className="border-l border-white/20 pl-3">
-            <span className="text-slate-400 block font-mono">Memory Writes</span>
-            <span className="text-amber-400 font-bold font-mono">{stats.writes} ops</span>
+          <div className="border-l border-white/20 pl-2 text-center sm:text-left">
+            <span className="text-slate-400 block font-mono text-[10px] sm:text-xs">Writes</span>
+            <span className="text-amber-400 font-bold font-mono text-xs sm:text-sm">{stats.writes}</span>
           </div>
         </div>
       </div>
 
       {/* Status banner */}
-      <div className="mb-6 px-4 py-2.5 bg-slate-800/80 rounded-lg border border-blue-500/30 flex items-center justify-between text-sm">
-        <span className="text-blue-300 font-medium">⚡ {statusLog}</span>
-        <span className="text-xs font-mono text-slate-400">
-          Load Factor: {((array.length / capacity) * 100).toFixed(0)}%
+      <div className="mb-4 p-2.5 sm:px-4 sm:py-2.5 bg-slate-800/80 rounded-lg border border-blue-500/30 flex flex-col sm:flex-row sm:items-center justify-between text-xs sm:text-sm gap-1">
+        <span className="text-blue-300 font-medium break-words">⚡ {statusLog}</span>
+        <span className="text-[10px] sm:text-xs font-mono text-slate-400 flex-shrink-0">
+          Load: {((array.length / capacity) * 100).toFixed(0)}%
         </span>
       </div>
 
       {/* Memory Allocation Buffer View */}
-      <div className="bg-slate-950/60 rounded-xl p-4 overflow-x-auto border border-white/10 mb-6">
-        <div className="text-xs font-mono text-slate-400 mb-3 flex items-center justify-between">
-          <span>Contiguous Physical Memory Buffer (Capacity: {capacity})</span>
-          <span className="text-emerald-400">Green = Mid | Yellow = Active | Purple = Unallocated</span>
+      <div className="bg-slate-950/60 rounded-xl p-3 sm:p-4 border border-white/10 mb-4 md:mb-6 max-w-full">
+        <div className="text-[11px] sm:text-xs font-mono text-slate-400 mb-2 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+          <span>Contiguous Buffer (Cap: {capacity})</span>
+          <span className="text-emerald-400 text-[10px] sm:text-xs">
+            Green: Mid | Yellow: Active | Purple: Low/High
+          </span>
         </div>
 
-        <div className="flex gap-2 items-end min-h-[170px] pb-3 overflow-x-auto">
-          {Array.from({ length: capacity }).map((_, slotIdx) => {
-            const hasElement = slotIdx < array.length
-            const val = hasElement ? array[slotIdx] : null
-            const isActive = highlightIndices.active === slotIdx
-            const isMid = highlightIndices.mid === slotIdx
-            const isBound = highlightIndices.low === slotIdx || highlightIndices.high === slotIdx
+        <div className="overflow-x-auto pb-2 scrollbar-thin">
+          <div className="flex gap-2 items-end min-h-[150px] sm:min-h-[170px] min-w-min mx-auto py-2">
+            {Array.from({ length: capacity }).map((_, slotIdx) => {
+              const hasElement = slotIdx < array.length
+              const val = hasElement ? array[slotIdx] : null
+              const isActive = highlightIndices.active === slotIdx
+              const isMid = highlightIndices.mid === slotIdx
+              const isBound = highlightIndices.low === slotIdx || highlightIndices.high === slotIdx
 
-            return (
-              <div key={slotIdx} className="flex flex-col items-center">
-                <AnimatePresence mode="popLayout">
-                  {hasElement ? (
-                    <motion.div
-                      key={`elem-${slotIdx}-${val}`}
-                      initial={{ opacity: 0, scale: 0.5, y: -20 }}
-                      animate={{
-                        opacity: 1,
-                        scale: 1,
-                        y: 0,
-                        backgroundColor: isActive
-                          ? '#f59e0b'
-                          : isMid
-                          ? '#10b981'
-                          : isBound
-                          ? '#8b5cf6'
-                          : '#3b82f6'
-                      }}
-                      exit={{ opacity: 0, scale: 0, y: 30 }}
-                      transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                      className="w-12 md:w-14 rounded-lg flex flex-col justify-center items-center font-bold text-white shadow-lg border border-white/30"
-                      style={{ height: `${Math.max(50, Math.min(130, val * 2.2))}px` }}
-                    >
-                      <span className="text-xs md:text-sm">{val}</span>
-                    </motion.div>
-                  ) : (
-                    <div
-                      className="w-12 md:w-14 h-12 rounded-lg border-2 border-dashed border-white/20 bg-white/5 flex items-center justify-center text-[10px] text-slate-500 font-mono"
-                    >
-                      FREE
-                    </div>
+              return (
+                <div key={slotIdx} className="flex flex-col items-center flex-shrink-0">
+                  <AnimatePresence mode="popLayout">
+                    {hasElement ? (
+                      <motion.div
+                        key={`elem-${slotIdx}-${val}`}
+                        initial={{ opacity: 0, scale: 0.5, y: -20 }}
+                        animate={{
+                          opacity: 1,
+                          scale: 1,
+                          y: 0,
+                          backgroundColor: isActive
+                            ? '#f59e0b'
+                            : isMid
+                            ? '#10b981'
+                            : isBound
+                            ? '#8b5cf6'
+                            : '#3b82f6'
+                        }}
+                        exit={{ opacity: 0, scale: 0, y: 30 }}
+                        transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                        className="w-10 sm:w-12 md:w-14 rounded-lg flex flex-col justify-center items-center font-bold text-white shadow-lg border border-white/30"
+                        style={{ height: `${Math.max(45, Math.min(120, val * 2))}px` }}
+                      >
+                        <span className="text-xs sm:text-sm">{val}</span>
+                      </motion.div>
+                    ) : (
+                      <div
+                        className="w-10 sm:w-12 md:w-14 h-11 sm:h-12 rounded-lg border-2 border-dashed border-white/20 bg-white/5 flex items-center justify-center text-[9px] sm:text-[10px] text-slate-500 font-mono"
+                      >
+                        FREE
+                      </div>
+                    )}
+                  </AnimatePresence>
+                  <span className="text-[9px] sm:text-[10px] font-mono text-slate-400 mt-1">[{slotIdx}]</span>
+                  {highlightIndices.low === slotIdx && (
+                    <span className="text-[8px] sm:text-[9px] font-mono font-bold text-purple-400">LOW</span>
                   )}
-                </AnimatePresence>
-                <span className="text-[10px] font-mono text-slate-400 mt-1.5">[{slotIdx}]</span>
-                {highlightIndices.low === slotIdx && (
-                  <span className="text-[9px] font-mono font-bold text-purple-400">LOW</span>
-                )}
-                {highlightIndices.mid === slotIdx && (
-                  <span className="text-[9px] font-mono font-bold text-emerald-400">MID</span>
-                )}
-                {highlightIndices.high === slotIdx && (
-                  <span className="text-[9px] font-mono font-bold text-purple-400">HIGH</span>
-                )}
-              </div>
-            )
-          })}
+                  {highlightIndices.mid === slotIdx && (
+                    <span className="text-[8px] sm:text-[9px] font-mono font-bold text-emerald-400">MID</span>
+                  )}
+                  {highlightIndices.high === slotIdx && (
+                    <span className="text-[8px] sm:text-[9px] font-mono font-bold text-purple-400">HIGH</span>
+                  )}
+                </div>
+              )
+            })}
+          </div>
         </div>
       </div>
 
-      {/* Control Panels */}
-      <div className="bg-white/5 rounded-xl p-4 border border-white/10 space-y-4">
+      {/* Control Panels - Fully Responsive for Mobile & Desktop */}
+      <div className="bg-white/5 rounded-xl p-3 sm:p-4 border border-white/10 space-y-3 sm:space-y-4">
         {/* Row 1: Push / Pop & Binary Search */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="flex gap-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+          {/* Push & Pop Group */}
+          <div className="flex flex-col sm:flex-row gap-2 w-full">
             <input
               type="number"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handlePush()}
               placeholder="Value to append"
-              className="flex-1 px-4 py-2 rounded-lg bg-white/10 text-white placeholder-white/40 border border-white/20 text-sm outline-none"
+              className="w-full flex-1 min-w-0 px-3 py-2 rounded-lg bg-white/10 text-white placeholder-white/40 border border-white/20 text-xs sm:text-sm outline-none focus:border-blue-400"
             />
-            <button
-              onClick={handlePush}
-              disabled={isProcessing}
-              className="px-5 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-semibold text-sm transition"
-            >
-              Push (Append)
-            </button>
-            <button
-              onClick={handlePop}
-              disabled={isProcessing || array.length === 0}
-              className="px-4 py-2 bg-rose-500/80 hover:bg-rose-600 text-white rounded-lg font-semibold text-sm transition"
-            >
-              Pop
-            </button>
+            <div className="flex gap-2 w-full sm:w-auto">
+              <button
+                onClick={handlePush}
+                disabled={isProcessing}
+                className="flex-1 sm:flex-none px-4 py-2 bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 text-white rounded-lg font-semibold text-xs sm:text-sm transition whitespace-nowrap"
+              >
+                Push (Append)
+              </button>
+              <button
+                onClick={handlePop}
+                disabled={isProcessing || array.length === 0}
+                className="flex-1 sm:flex-none px-4 py-2 bg-rose-500/80 hover:bg-rose-600 disabled:opacity-50 text-white rounded-lg font-semibold text-xs sm:text-sm transition whitespace-nowrap"
+              >
+                Pop
+              </button>
+            </div>
           </div>
 
-          <div className="flex gap-2">
+          {/* Binary Search Group */}
+          <div className="flex flex-col sm:flex-row gap-2 w-full">
             <input
               type="number"
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleBinarySearch()}
               placeholder="Target for Binary Search"
-              className="flex-1 px-4 py-2 rounded-lg bg-white/10 text-white placeholder-white/40 border border-white/20 text-sm outline-none"
+              className="w-full flex-1 min-w-0 px-3 py-2 rounded-lg bg-white/10 text-white placeholder-white/40 border border-white/20 text-xs sm:text-sm outline-none focus:border-indigo-400"
             />
             <button
               onClick={handleBinarySearch}
               disabled={isProcessing || array.length === 0}
-              className="px-5 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg font-semibold text-sm transition"
+              className="w-full sm:w-auto px-4 py-2 bg-indigo-500 hover:bg-indigo-600 disabled:opacity-50 text-white rounded-lg font-semibold text-xs sm:text-sm transition whitespace-nowrap"
             >
               Binary Search O(log N)
             </button>
@@ -286,43 +294,47 @@ const ArrayVisualizer = () => {
         </div>
 
         {/* Row 2: Arbitrary Insert and Delete */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2 border-t border-white/10">
-          <div className="flex gap-2">
-            <input
-              type="number"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              placeholder="Val"
-              className="w-24 px-3 py-1.5 rounded-lg bg-white/10 text-white placeholder-white/40 border border-white/20 text-sm outline-none"
-            />
-            <input
-              type="number"
-              value={indexValue}
-              onChange={(e) => setIndexValue(e.target.value)}
-              placeholder="Index"
-              className="w-24 px-3 py-1.5 rounded-lg bg-white/10 text-white placeholder-white/40 border border-white/20 text-sm outline-none"
-            />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 pt-3 border-t border-white/10">
+          {/* Insert Group */}
+          <div className="flex flex-col sm:flex-row gap-2 w-full">
+            <div className="grid grid-cols-2 gap-2 w-full sm:w-auto">
+              <input
+                type="number"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                placeholder="Val"
+                className="w-full sm:w-20 px-3 py-2 rounded-lg bg-white/10 text-white placeholder-white/40 border border-white/20 text-xs sm:text-sm outline-none"
+              />
+              <input
+                type="number"
+                value={indexValue}
+                onChange={(e) => setIndexValue(e.target.value)}
+                placeholder="Index"
+                className="w-full sm:w-20 px-3 py-2 rounded-lg bg-white/10 text-white placeholder-white/40 border border-white/20 text-xs sm:text-sm outline-none"
+              />
+            </div>
             <button
               onClick={handleInsertAt}
               disabled={isProcessing}
-              className="flex-1 px-4 py-1.5 bg-blue-500 hover:bg-blue-600 rounded-lg text-sm font-semibold transition"
+              className="w-full sm:flex-1 px-4 py-2 bg-blue-500 hover:bg-blue-600 disabled:opacity-50 rounded-lg text-xs sm:text-sm font-semibold transition whitespace-nowrap"
             >
               Insert At Index O(N)
             </button>
           </div>
 
-          <div className="flex gap-2">
+          {/* Delete Group */}
+          <div className="flex flex-col sm:flex-row gap-2 w-full">
             <input
               type="number"
               value={indexValue}
               onChange={(e) => setIndexValue(e.target.value)}
               placeholder="Index to delete"
-              className="flex-1 px-3 py-1.5 rounded-lg bg-white/10 text-white placeholder-white/40 border border-white/20 text-sm outline-none"
+              className="w-full flex-1 min-w-0 px-3 py-2 rounded-lg bg-white/10 text-white placeholder-white/40 border border-white/20 text-xs sm:text-sm outline-none"
             />
             <button
               onClick={handleDeleteAt}
               disabled={isProcessing}
-              className="px-5 py-1.5 bg-orange-500 hover:bg-orange-600 rounded-lg text-sm font-semibold transition"
+              className="w-full sm:w-auto px-4 py-2 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 rounded-lg text-xs sm:text-sm font-semibold transition whitespace-nowrap"
             >
               Delete At Index
             </button>
