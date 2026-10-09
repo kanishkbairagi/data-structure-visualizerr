@@ -142,7 +142,7 @@ src/
 
 ---
 
-## 📜 License & Acknowledgments
+## 📜 Author & Acknowledgments
 
-This project is open-source under the **MIT License**.  
-Developed by **Kanishk Bairagi** as a pedagogical engineering tool for computer science students.
+Developed and maintained by **Kanishk Bairagi** as an open-source pedagogical engineering project for computer science students.
+
