@@ -7,7 +7,7 @@
 ![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3.3-38bdf8?style=for-the-badge&logo=tailwindcss&logoColor=white)
 ![Framer Motion](https://img.shields.io/badge/Framer_Motion-10.16-ff0055?style=for-the-badge&logo=framer&logoColor=white)
 ![Deployment](https://img.shields.io/badge/Deployment-Vercel_Production-000000?style=for-the-badge&logo=vercel&logoColor=white)
-![Adoption](https://img.shields.io/badge/Adoption-135+_Active_Students-10b981?style=for-the-badge)
+![Adoption](https://img.shields.io/badge/Adoption-151+_Active_Students-10b981?style=for-the-badge)
 
 **An interactive execution engine visualizing algorithmic state transitions, mathematical invariants, and amortized complexity.**
 
@@ -31,10 +31,10 @@ The platform is deployed live on Vercel and instrumented with privacy-first web 
 
 | Telemetry Metric | Verified Value | Impact / Measurement |
 | :--- | :--- | :--- |
-| **Active Student Users** | **135+ Unique Visitors** | Coursework revision & algorithm study |
-| **Interaction Sessions** | **204+ Page Views** | Multi-ADT test sessions across algorithms |
-| **Geographic Diversity** | **8 Countries** | 🇮🇳 India (121), 🇺🇸 USA (7), 🇬🇧 UK (2), 🇨🇭 Switzerland (1), 🇫🇷 France (1), 🇳🇱 Netherlands (1), 🇵🇭 Philippines (1), 🇵🇱 Poland (1) |
-| **Cross-Platform Delivery**| **82% Mobile, 17% Desktop** | Responsive touch layout with throttled 60 FPS transitions |
+| **Active Student Users** | **151+ Unique Visitors** | Coursework revision & algorithm study |
+| **Interaction Sessions** | **230+ Page Views** | Multi-ADT test sessions across algorithms |
+| **Geographic Diversity** | **9 Countries** | 🇮🇳 India (134), 🇺🇸 USA (9), 🇬🇧 UK (2), 🇳🇱 Netherlands (2), 🇨🇭 Switzerland, 🇫🇷 France, 🇵🇭 Philippines, 🇵🇱 Poland, 🇸🇬 Singapore |
+| **Cross-Platform Delivery**| **79% Mobile, 20% Desktop** | Responsive touch layout with throttled 60 FPS transitions |
 | **Discovery Channels** | **Multi-Channel Organic** | Instagram, Reddit, Google Quick Search, Snapchat, Vercel |
 
 ---
